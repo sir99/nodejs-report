@@ -9,7 +9,10 @@
   "license": "ISC",
   "dependencies": {
     "@pdftron/pdfnet-node": "^9.2.0-1",
-    "easyinvoice": "^2.3.0"
+    "easyinvoice": "^2.3.0",
+    "pdfkit": "^0.13.0",
+    "pdfkit-table": "^0.1.86",
+    "voilab-pdf-table": "^0.5.1"
   },
   "devDependencies": {
     "express": "^4.17.3",

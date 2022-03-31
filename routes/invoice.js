@@ -2,7 +2,6 @@ const express       = require("express");
 const fs            = require("fs");
 const path          = require("path");
 const easyinvoice   = require("easyinvoice");
-const app           = express();
 const router        = express.Router();
 const { PDFNet }    = require('@pdftron/pdfnet-node');
 PDFNet.initialize("demo:1648614229918:7bc8a8e80300000000d6dcbe2ff100bca23a574a8bb67722afcf9f5d72");
@@ -71,8 +70,8 @@ router.get("/invoice", (req, res) => {
 
 // convert from word
 router.get("/convertFromOffice", (req, res) => {
-  const inputPath     = path.resolve(__dirname, `../files/invoice.docx`);
-  const outputPath    = path.resolve(__dirname, `../files/invoice.pdf`);
+  const inputPath     = path.resolve(__dirname, `../files/docx/invoice.docx`);
+  const outputPath    = path.resolve(__dirname, `../files/pdf/invoice.pdf`);
 
   const convertToPDF  = async () => {
     const pdfdoc    = await PDFNet.PDFDoc.create();
@@ -99,8 +98,8 @@ router.get("/convertFromOffice", (req, res) => {
 
 // replace text
 router.get("/generateInvoice", (req, res) => {
-  const inputPath     = path.resolve(__dirname, `../files/invoice.pdf`);
-  const outputPath    = path.resolve(__dirname, `../files/invoice_replace.pdf`);
+  const inputPath     = path.resolve(__dirname, `../files/pdf/invoice.pdf`);
+  const outputPath    = path.resolve(__dirname, `../files/pdf/invoice_replace.pdf`);
 
   const replaceText   = async () => {
     const pdfdoc    = await PDFNet.PDFDoc.createFromFilePath(inputPath);
@@ -151,8 +150,8 @@ router.get("/generateInvoice", (req, res) => {
 router.get("/watermark", (req, res) => {
   const { filename, watermark } = req.query;
 
-  const inputPath     = path.resolve(__dirname, `../files/${filename}.pdf`);
-  const outputPath    = path.resolve(__dirname, `../files/${filename}_watermark.pdf`);
+  const inputPath     = path.resolve(__dirname, `../files/pdf/${filename}.pdf`);
+  const outputPath    = path.resolve(__dirname, `../files/pdf/${filename}_watermark.pdf`);
 
   const watermarkPDF  = async () => {
     const pdfdoc    = await PDFNet.PDFDoc.createFromFilePath(inputPath);
@@ -201,8 +200,8 @@ router.get("/watermark", (req, res) => {
 router.get("/thumbnail", (req, res) => {
   const { filename } = req.query;
 
-  const inputPath     = path.resolve(__dirname, `../files/${filename}.pdf`);
-  const outputPath    = path.resolve(__dirname, `../files/${filename}_watermark.pdf`);
+  const inputPath     = path.resolve(__dirname, `../files/pdf/${filename}.pdf`);
+  const outputPath    = path.resolve(__dirname, `../files/pdf/${filename}_img.pdf`);
 
   const getThumbFromPDF = async () => {
     const doc       = await PDFNet.PDFDoc.createFromFilePath(inputPath);
@@ -232,7 +231,7 @@ router.get("/thumbnail", (req, res) => {
 router.get("/textExtract", (req, res) => {
   const { filename, pageNumber } = req.query;
 
-  const inputPath     = path.resolve(__dirname, `../files/${filename}.pdf`);
+  const inputPath     = path.resolve(__dirname, `../files/pdf/${filename}.pdf`);
 
   const extractText   = async () => {
     const doc       = await PDFNet.PDFDoc.createFromFilePath(inputPath);
@@ -269,7 +268,7 @@ router.get("/convertFromPDF", (req, res) => {
       return;
     }
 
-    await PDFNet.Convert.fileToWord("../files/abstrak.pdf", "ouput.docx");
+    await PDFNet.Convert.fileToWord("../files/pdf/abstrak.pdf", "../files/docx/ouput.docx");
   }
 
   PDFNet.runWithCleanup(main);
