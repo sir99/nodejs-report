@@ -31,17 +31,4 @@ let data = [
     },
 ];
 
-let name     = [];
-let qty             = [];
-let price           = [];
-let total           = [];
-const datalength    = data.length;
-
-for(let i=0; i<datalength; i++) {
-    name     = data[i].name;
-    qty             = data[i].qty;
-    price           = data[i].price;
-    total           = data[i].total;
-}
-
 module.exports = data;
