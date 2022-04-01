@@ -2,9 +2,9 @@ const express        = require("express");
 const fs             = require("fs");
 const path           = require("path");
 const PDFDocument    = require('pdfkit');
-// const PDFDocument       = require('pdfkit-table');
 const router         = express.Router();
 const doc            = new PDFDocument;
+const api            = require("../api/api");
 
 function createLayout() {
    // image
@@ -21,25 +21,25 @@ function createLayout() {
 
    // Sender
    doc.fontSize(12);
-   doc.font('Helvetica-Bold').text("Sender Company", 480, 70, {
+   doc.font('Helvetica-Bold').text("PT SERU", 480, 70, {
    width: 100,
    align: 'right'
    });
 
    doc.fontSize(12);
-   doc.font('Helvetica').text("Sender Address", 480, 85, {
+   doc.font('Helvetica').text("Jl. Merpati Blok P", 480, 85, {
    width: 100,
    align: 'right'
    });
 
    doc.fontSize(12);
-   doc.text("zip, Sender City", 480, 100, {
+   doc.text("11830, Jakarta", 480, 100, {
    width: 100,
    align: 'right'
    });
 
    doc.fontSize(12);
-   doc.text("Sender Country", 480, 115, {
+   doc.text("Indonesia", 480, 115, {
    width: 100,
    align: 'right'
    });
@@ -102,44 +102,44 @@ function createLayout() {
 
    // client
    doc.fontSize(12);
-   doc.font('Helvetica-Bold').text("Client Company", 30, 180, {
+   doc.font('Helvetica-Bold').text("PT Tbk", 30, 180, {
       width: 100,
       align: 'left'
    });
 
    doc.fontSize(12);
-   doc.font('Helvetica').text("Client Address", 30, 195, {
+   doc.font('Helvetica').text("Jl. Arjuna Utara", 30, 195, {
       width: 100,
       align: 'left'
    });
 
    doc.fontSize(12);
-   doc.text("zip, Client City", 30, 210, {
+   doc.text("11730, Jakarta", 30, 210, {
       width: 100,
       align: 'left'
    });
 
    doc.fontSize(12);
-   doc.text("Client Country", 30, 225, {
+   doc.text("Indonesia", 30, 225, {
       width: 100,
       align: 'left'
    });
 
    // det inv
    doc.fontSize(12);
-   doc.text("Number: invoice number", 430, 180, {
+   doc.text("Number: 2022.001", 430, 180, {
    width: 150,
    align: 'right'
    });
 
    doc.fontSize(12);
-   doc.text("Date: date", 430, 195, {
+   doc.text("Date: 2022/03/30", 430, 195, {
    width: 150,
    align: 'right'
    });
 
    doc.fontSize(12);
-   doc.text("Due Date: due date", 430, 210, {
+   doc.text("Due Date: 2022/04/05", 430, 210, {
    width: 150,
    align: 'right'
    });
@@ -151,59 +151,50 @@ function createLayout() {
    align: 'center'
    });
 
-   doc.fontSize(12);
-   doc.font('Helvetica').text("Product name1", 40, 290, {
-   width: 100,
-   align: 'left'
-   });
+   const datalength  = api.length;
+   
+   let j = 285;
+   let subtotal   = 0;
+   let grandtotal = 0;
+   for(let i=0; i<datalength; i++) {
+      // product
+      doc.fontSize(12);
+      doc.font('Helvetica').text(api[i].name, 40, j, {
+      width: 100,
+      align: 'left'
+      });
 
-   doc.fontSize(12);
-   doc.font('Helvetica').text("Product name2", 40, 315, {
-   width: 100,
-   align: 'left'
-   });
+      // qty
+      doc.fontSize(12);
+      doc.font('Helvetica').text(api[i].qty, 215, j, {
+      width: 100,
+      align: 'right'
+      });
 
-   doc.fontSize(12);
-   doc.font('Helvetica').text("Product name3", 40, 340, {
-   width: 100,
-   align: 'left'
-   });
+      // price
+      doc.fontSize(12);
+      doc.font('Helvetica').text(api[i].price, 325, j, {
+      width: 100,
+      align: 'right'
+      });
 
-   doc.fontSize(12);
-   doc.font('Helvetica').text("Product name4", 40, 365, {
-   width: 100,
-   align: 'left'
-   });
+      // total
+      doc.fontSize(12);
+      doc.font('Helvetica').text(api[i].total, 475, j, {
+      width: 100,
+      align: 'right'
+      });
+
+      j = j+25;
+      subtotal    = subtotal + api[i].total;
+      grandtotal  = subtotal;
+   }
 
    // qty
    doc.fontSize(12);
    doc.font('Helvetica-Bold').text("QTY", 215, 260, {
    width: 100,
    align: 'center'
-   });
-
-   doc.fontSize(12);
-   doc.font('Helvetica').text("0", 215, 285, {
-   width: 100,
-   align: 'right'
-   });
-
-   doc.fontSize(12);
-   doc.font('Helvetica').text("0", 215, 310, {
-   width: 100,
-   align: 'right'
-   });
-
-   doc.fontSize(12);
-   doc.font('Helvetica').text("0", 215, 335, {
-   width: 100,
-   align: 'right'
-   });
-
-   doc.fontSize(12);
-   doc.font('Helvetica').text("0", 215, 360, {
-   width: 100,
-   align: 'right'
    });
 
    // price
@@ -213,30 +204,6 @@ function createLayout() {
    align: 'center'
    });
 
-   doc.fontSize(12);
-   doc.font('Helvetica').text("0", 325, 285, {
-   width: 100,
-   align: 'right'
-   });
-
-   doc.fontSize(12);
-   doc.font('Helvetica').text("0", 325, 310, {
-   width: 100,
-   align: 'right'
-   });
-
-   doc.fontSize(12);
-   doc.font('Helvetica').text("0", 325, 335, {
-   width: 100,
-   align: 'right'
-   });
-
-   doc.fontSize(12);
-   doc.font('Helvetica').text("0", 325, 360, {
-   width: 100,
-   align: 'right'
-   });
-
    // total
    doc.fontSize(12);
    doc.font('Helvetica-Bold').text("Total", 450, 260, {
@@ -244,41 +211,17 @@ function createLayout() {
    align: 'center'
    });
 
-   doc.fontSize(12);
-   doc.font('Helvetica').text("0", 475, 285, {
-   width: 100,
-   align: 'right'
-   });
-
-   doc.fontSize(12);
-   doc.font('Helvetica').text("0", 475, 310, {
-   width: 100,
-   align: 'right'
-   });
-
-   doc.fontSize(12);
-   doc.font('Helvetica').text("0", 475, 335, {
-   width: 100,
-   align: 'right'
-   });
-
-   doc.fontSize(12);
-   doc.font('Helvetica').text("0", 475, 360, {
-   width: 100,
-   align: 'right'
-   });
-
    // subtotal
    doc.fontSize(12);
-   doc.font('Helvetica-Bold').text("Subtotal: ", 380, 430, {
-   width: 100,
+   doc.font('Helvetica-Bold').text(`Subtotal: ${subtotal}`, 380, 430, {
+   width: 150,
    align: 'right'
    });
 
    // grandtotal
    doc.fontSize(12);
-   doc.font('Helvetica-Bold').text("Grandtotal: ", 380, 455, {
-   width: 100,
+   doc.font('Helvetica-Bold').text(`Grantotal: ${grandtotal}`, 380, 455, {
+   width: 150,
    align: 'right'
    });
 
