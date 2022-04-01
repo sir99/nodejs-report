@@ -3,7 +3,6 @@ const app           = express();
 const invoiceRoute  = require("./routes/invoice");
 const tableRoute    = require("./routes/table");
 const layoutRoute   = require("./routes/layout");
-const peopleRoute   = require("./routes/people");
 const pdfDownload   = require("./routes/download");
 
 const axios         = require("axios");
