@@ -1,15 +1,16 @@
-const express        = require("express");
+const { download } = require("easyinvoice");
 const fs             = require("fs");
 const path           = require("path");
 const PDFDocument    = require('pdfkit');
-const router         = express.Router();
 const doc            = new PDFDocument;
 const api            = require("../api/api");
 
 function createLayout() {
+
    // image
    const img      = path.resolve(__dirname, `../files/images/invoice.png`);
    const pdf      = path.resolve(__dirname, `../files/pdf`);
+   const filename = `${pdf}/layout.pdf`;
 
    doc.image(img, 30, 40, {width: 100, });
    
@@ -233,8 +234,7 @@ function createLayout() {
    });
 
    // output
-   doc.pipe(fs.createWriteStream(`${pdf}/layout.pdf`));
-
+   doc.pipe(fs.createWriteStream(filename));
    doc.end();
 }
 
